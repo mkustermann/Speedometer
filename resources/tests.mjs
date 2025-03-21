@@ -1113,18 +1113,20 @@ Suites.push({
     ],
 });
 
+
 Suites.push({
     name: "TodoMVC-Dart2JS",
     url: "resources/todomvc/dart2js-jaspr/index.html",
     tags: ["todomvc"],
     async prepare(page) {
-        (await page.waitForElement(".new-todo")).focus();
+        const element = await page.waitForElement(".new-todo");
+        element.focus();
     },
     tests: [
         new BenchmarkTestStep(`Adding${numberOfItemsToAdd}Items`, (page) => {
             const newTodo = page.querySelector(".new-todo");
             for (let i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.setValue(getTodoText("ja", i));
+                newTodo.setValue(getTodoText(defaultLanguage, i));
                 newTodo.dispatchEvent("change");
                 newTodo.enter("keypress");
             }
@@ -1146,13 +1148,14 @@ Suites.push({
     url: "resources/todomvc/dart2wasm-jaspr/index.html",
     tags: ["todomvc"],
     async prepare(page) {
-        (await page.waitForElement(".new-todo")).focus();
+        const element = await page.waitForElement(".new-todo");
+        element.focus();
     },
     tests: [
         new BenchmarkTestStep(`Adding${numberOfItemsToAdd}Items`, (page) => {
             const newTodo = page.querySelector(".new-todo");
             for (let i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.setValue(getTodoText("ja", i));
+                newTodo.setValue(getTodoText(defaultLanguage, i));
                 newTodo.dispatchEvent("change");
                 newTodo.enter("keypress");
             }
