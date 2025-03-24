@@ -671,6 +671,66 @@ Suites.push({
 });
 
 Suites.push({
+    name: "TodoMVC-Dart2JS",
+    url: "resources/todomvc/dart2js-jaspr/index.html",
+    tags: ["todomvc"],
+    async prepare(page) {
+        const element = await page.waitForElement(".new-todo");
+        element.focus();
+    },
+    tests: [
+        new BenchmarkTestStep(`Adding${numberOfItemsToAdd}Items`, (page) => {
+            const newTodo = page.querySelector(".new-todo");
+            for (let i = 0; i < numberOfItemsToAdd; i++) {
+                newTodo.setValue(getTodoText(defaultLanguage, i));
+                newTodo.dispatchEvent("change");
+                newTodo.enter("keypress");
+            }
+        }),
+        new BenchmarkTestStep("CompletingAllItems", (page) => {
+            const checkboxes = page.querySelectorAll(".toggle");
+            for (let i = 0; i < numberOfItemsToAdd; i++)
+                checkboxes[i].click();
+        }),
+        new BenchmarkTestStep("DeletingAllItems", (page) => {
+            const deleteButtons = page.querySelectorAll(".destroy");
+            for (let i = numberOfItemsToAdd - 1; i >= 0; i--)
+                deleteButtons[i].click();
+        }),
+    ],
+});
+
+Suites.push({
+    name: "TodoMVC-Dart2Wasm",
+    url: "resources/todomvc/dart2wasm-jaspr/index.html",
+    tags: ["todomvc"],
+    async prepare(page) {
+        const element = await page.waitForElement(".new-todo");
+        element.focus();
+    },
+    tests: [
+        new BenchmarkTestStep(`Adding${numberOfItemsToAdd}Items`, (page) => {
+            const newTodo = page.querySelector(".new-todo");
+            for (let i = 0; i < numberOfItemsToAdd; i++) {
+                newTodo.setValue(getTodoText(defaultLanguage, i));
+                newTodo.dispatchEvent("change");
+                newTodo.enter("keypress");
+            }
+        }),
+        new BenchmarkTestStep("CompletingAllItems", (page) => {
+            const checkboxes = page.querySelectorAll(".toggle");
+            for (let i = 0; i < numberOfItemsToAdd; i++)
+                checkboxes[i].click();
+        }),
+        new BenchmarkTestStep("DeletingAllItems", (page) => {
+            const deleteButtons = page.querySelectorAll(".destroy");
+            for (let i = numberOfItemsToAdd - 1; i >= 0; i--)
+                deleteButtons[i].click();
+        }),
+    ],
+});
+
+Suites.push({
     name: "TodoMVC-Preact",
     url: "resources/todomvc/architecture-examples/preact/dist/index.html#/home",
     tags: ["todomvc"],
@@ -1109,66 +1169,6 @@ Suites.push({
             }
             canvas.dispatchMouseEvent("mouseup", endingX, endingY);
             page.call("serviceRAF");
-        }),
-    ],
-});
-
-
-Suites.push({
-    name: "TodoMVC-Dart2JS",
-    url: "resources/todomvc/dart2js-jaspr/index.html",
-    tags: ["todomvc"],
-    async prepare(page) {
-        const element = await page.waitForElement(".new-todo");
-        element.focus();
-    },
-    tests: [
-        new BenchmarkTestStep(`Adding${numberOfItemsToAdd}Items`, (page) => {
-            const newTodo = page.querySelector(".new-todo");
-            for (let i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.setValue(getTodoText(defaultLanguage, i));
-                newTodo.dispatchEvent("change");
-                newTodo.enter("keypress");
-            }
-        }),
-        new BenchmarkTestStep("CompletingAllItems", (page) => {
-            const checkboxes = page.querySelectorAll(".toggle");
-            for (let i = 0; i < numberOfItemsToAdd; i++)
-                checkboxes[i].click();
-        }),
-        new BenchmarkTestStep("DeletingAllItems", (page) => {
-            const deleteButtons = page.querySelectorAll(".destroy");
-            for (let i = numberOfItemsToAdd - 1; i >= 0; i--)
-                deleteButtons[i].click();
-        }),
-    ],
-});
-Suites.push({
-    name: "TodoMVC-Dart2Wasm",
-    url: "resources/todomvc/dart2wasm-jaspr/index.html",
-    tags: ["todomvc"],
-    async prepare(page) {
-        const element = await page.waitForElement(".new-todo");
-        element.focus();
-    },
-    tests: [
-        new BenchmarkTestStep(`Adding${numberOfItemsToAdd}Items`, (page) => {
-            const newTodo = page.querySelector(".new-todo");
-            for (let i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.setValue(getTodoText(defaultLanguage, i));
-                newTodo.dispatchEvent("change");
-                newTodo.enter("keypress");
-            }
-        }),
-        new BenchmarkTestStep("CompletingAllItems", (page) => {
-            const checkboxes = page.querySelectorAll(".toggle");
-            for (let i = 0; i < numberOfItemsToAdd; i++)
-                checkboxes[i].click();
-        }),
-        new BenchmarkTestStep("DeletingAllItems", (page) => {
-            const deleteButtons = page.querySelectorAll(".destroy");
-            for (let i = numberOfItemsToAdd - 1; i >= 0; i--)
-                deleteButtons[i].click();
         }),
     ],
 });
